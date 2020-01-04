@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.dao.ShopMapper">
+  <resultMap id="BaseResultMap" type="com.dhu.bean.Shop">
+    <id column="ShopId" jdbcType="VARCHAR" property="shopid" />
+    <result column="Bookname" jdbcType="VARCHAR" property="bookname" />
+    <result column="Bookprice" jdbcType="DECIMAL" property="bookprice" />
+    <result column="Bookintroduction" jdbcType="VARCHAR" property="bookintroduction" />
+    <result column="Shopstatus" jdbcType="VARCHAR" property="shopstatus" />
+    <result column="Shopimage" jdbcType="VARCHAR" property="shopimage" />
+    <result column="UseId" jdbcType="VARCHAR" property="useid" />
+    <result column="BookId" jdbcType="VARCHAR" property="bookid" />
+    <result column="paystatus" jdbcType="VARCHAR" property="paystatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ShopId, Bookname, Bookprice, Bookintroduction, Shopstatus, Shopimage, UseId, BookId, 
+    booknum, paystatus
+  </sql>
+  <select id="selectByExample" parameterType="com.dhu.bean.ShopExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shop
+    where ShopId = #{shopid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from shop
+    where ShopId = #{shopid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dhu.bean.ShopExample">
+    delete from shop
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dhu.bean.Shop">
+    insert into shop (ShopId, Bookname, Bookprice, 
+      Bookintroduction, Shopstatus, Shopimage, 
+      UseId, BookId, paystatus
+      )
+    values (#{shopid,jdbcType=VARCHAR}, #{bookname,jdbcType=VARCHAR}, #{bookprice,jdbcType=DECIMAL}, 
+      #{bookintroduction,jdbcType=VARCHAR}, #{shopstatus,jdbcType=VARCHAR}, #{shopimage,jdbcType=VARCHAR}, 
+      #{useid,jdbcType=VARCHAR}, #{bookid,jdbcType=VARCHAR}, #{paystatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dhu.bean.Shop">
+    insert into shop
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shopid != null">
+        ShopId,
+      </if>
+      <if test="bookname != null">
+        Bookname,
+      </if>
+      <if test="bookprice != null">
+        Bookprice,
+      </if>
+      <if test="bookintroduction != null">
+        Bookintroduction,
+      </if>
+      <if test="shopstatus != null">
+        Shopstatus,
+      </if>
+      <if test="shopimage != null">
+        Shopimage,
+      </if>
+      <if test="useid != null">
+        UseId,
+      </if>
+      <if test="bookid != null">
+        BookId,
+      </if>
+      <if test="paystatus != null">
+        paystatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shopid != null">
+        #{shopid,jdbcType=VARCHAR},
+      </if>
+      <if test="bookname != null">
+        #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="bookprice != null">
+        #{bookprice,jdbcType=DECIMAL},
+      </if>
+      <if test="bookintroduction != null">
+        #{bookintroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="shopstatus != null">
+        #{shopstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="shopimage != null">
+        #{shopimage,jdbcType=VARCHAR},
+      </if>
+      <if test="useid != null">
+        #{useid,jdbcType=VARCHAR},
+      </if>
+      <if test="bookid != null">
+        #{bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="paystatus != null">
+        #{paystatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dhu.bean.ShopExample" resultType="java.lang.Long">
+    select count(*) from shop
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shop
+    <set>
+      <if test="record.shopid != null">
+        ShopId = #{record.shopid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookname != null">
+        Bookname = #{record.bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookprice != null">
+        Bookprice = #{record.bookprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bookintroduction != null">
+        Bookintroduction = #{record.bookintroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopstatus != null">
+        Shopstatus = #{record.shopstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopimage != null">
+        Shopimage = #{record.shopimage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useid != null">
+        UseId = #{record.useid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookid != null">
+        BookId = #{record.bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paystatus != null">
+        paystatus = #{record.paystatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shop
+    set ShopId = #{record.shopid,jdbcType=VARCHAR},
+      Bookname = #{record.bookname,jdbcType=VARCHAR},
+      Bookprice = #{record.bookprice,jdbcType=DECIMAL},
+      Bookintroduction = #{record.bookintroduction,jdbcType=VARCHAR},
+      Shopstatus = #{record.shopstatus,jdbcType=VARCHAR},
+      Shopimage = #{record.shopimage,jdbcType=VARCHAR},
+      UseId = #{record.useid,jdbcType=VARCHAR},
+      BookId = #{record.bookid,jdbcType=VARCHAR},
+      paystatus = #{record.paystatus,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dhu.bean.Shop">
+    update shop
+    <set>
+      <if test="bookname != null">
+        Bookname = #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="bookprice != null">
+        Bookprice = #{bookprice,jdbcType=DECIMAL},
+      </if>
+      <if test="bookintroduction != null">
+        Bookintroduction = #{bookintroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="shopstatus != null">
+        Shopstatus = #{shopstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="shopimage != null">
+        Shopimage = #{shopimage,jdbcType=VARCHAR},
+      </if>
+      <if test="useid != null">
+        UseId = #{useid,jdbcType=VARCHAR},
+      </if>
+      <if test="bookid != null">
+        BookId = #{bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="paystatus != null">
+        paystatus = #{paystatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ShopId = #{shopid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dhu.bean.Shop">
+    update shop
+    set Bookname = #{bookname,jdbcType=VARCHAR},
+      Bookprice = #{bookprice,jdbcType=DECIMAL},
+      Bookintroduction = #{bookintroduction,jdbcType=VARCHAR},
+      Shopstatus = #{shopstatus,jdbcType=VARCHAR},
+      Shopimage = #{shopimage,jdbcType=VARCHAR},
+      UseId = #{useid,jdbcType=VARCHAR},
+      BookId = #{bookid,jdbcType=VARCHAR},
+      paystatus = #{paystatus,jdbcType=VARCHAR}
+    where ShopId = #{shopid,jdbcType=VARCHAR}
+  </update>
+
+  <select id="findlastinform" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    where ShopId = where ShopId = (SELECT max(ShopId) FROM shop);
+  </select>
+
+  <select id="selectShopByPage" resultMap="BaseResultMap">
+        select * from shop limit #{start},#{size}
+    </select>
+
+  <select id="selectCount" resultType="int">
+        SELECT COUNT(ShopId) FROM shop
+    </select>
+
+  <select id="selectshopbyid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from shop
+        where UseId=#{userid,jdbcType=VARCHAR}
+    </select>
+
+  <select id="selectuserbystatus" resultType="java.lang.String">
+        select DISTINCT UseId from shop
+        where Shopstatus = #{shopstatus,jdbcType=VARCHAR} AND paystatus = #{paystatus,jdbcType=VARCHAR}
+    </select>
+
+  <select id="selectshopbystatus" resultMap="BaseResultMap">
+        select * from shop
+        where Shopstatus = #{shopstatus,jdbcType=VARCHAR} AND paystatus = #{paystatus,jdbcType=VARCHAR}
+    </select>
+</mapper>

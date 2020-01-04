@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.dao.BookMapper">
+  <resultMap id="BaseResultMap" type="com.dhu.bean.Book">
+    <id column="BookId" jdbcType="VARCHAR" property="bookid" />
+    <result column="Bookname" jdbcType="VARCHAR" property="bookname" />
+    <result column="Bookprice" jdbcType="DOUBLE" property="bookprice" />
+    <result column="Bookimage" jdbcType="VARCHAR" property="bookimage" />
+    <result column="Bookstock" jdbcType="VARCHAR" property="bookstock" />
+    <result column="Bookfrom" jdbcType="VARCHAR" property="bookfrom" />
+    <result column="Bookintroduction" jdbcType="VARCHAR" property="bookintroduction" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    BookId, Bookname, Bookprice, Bookimage, Bookstock, Bookfrom, Bookintroduction
+  </sql>
+  <select id="selectByExample" parameterType="com.dhu.bean.BookExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from book
+    where BookId = #{bookid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByBookName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from book
+    where Bookname = #{bookname,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from book
+    where BookId = #{bookid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByBookName" parameterType="java.lang.String">
+    delete from book
+    where Bookname = #{bookname,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dhu.bean.BookExample">
+    delete from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dhu.bean.Book">
+    insert into book (BookId, Bookname, Bookprice, 
+      Bookimage, Bookstock, Bookfrom, 
+      Bookintroduction)
+    values (#{bookid,jdbcType=VARCHAR}, #{bookname,jdbcType=VARCHAR}, #{bookprice,jdbcType=DOUBLE}, 
+      #{bookimage,jdbcType=VARCHAR}, #{bookstock,jdbcType=VARCHAR}, #{bookfrom,jdbcType=VARCHAR}, 
+      #{bookintroduction,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dhu.bean.Book">
+    insert into book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bookid != null">
+        BookId,
+      </if>
+      <if test="bookname != null">
+        Bookname,
+      </if>
+      <if test="bookprice != null">
+        Bookprice,
+      </if>
+      <if test="bookimage != null">
+        Bookimage,
+      </if>
+      <if test="bookstock != null">
+        Bookstock,
+      </if>
+      <if test="bookfrom != null">
+        Bookfrom,
+      </if>
+      <if test="bookintroduction != null">
+        Bookintroduction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bookid != null">
+        #{bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="bookname != null">
+        #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="bookprice != null">
+        #{bookprice,jdbcType=DOUBLE},
+      </if>
+      <if test="bookimage != null">
+        #{bookimage,jdbcType=VARCHAR},
+      </if>
+      <if test="bookstock != null">
+        #{bookstock,jdbcType=VARCHAR},
+      </if>
+      <if test="bookfrom != null">
+        #{bookfrom,jdbcType=VARCHAR},
+      </if>
+      <if test="bookintroduction != null">
+        #{bookintroduction,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dhu.bean.BookExample" resultType="java.lang.Long">
+    select count(*) from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update book
+    <set>
+      <if test="record.bookid != null">
+        BookId = #{record.bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookname != null">
+        Bookname = #{record.bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookprice != null">
+        Bookprice = #{record.bookprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bookimage != null">
+        Bookimage = #{record.bookimage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookstock != null">
+        Bookstock = #{record.bookstock,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookfrom != null">
+        Bookfrom = #{record.bookfrom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookintroduction != null">
+        Bookintroduction = #{record.bookintroduction,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update book
+    set BookId = #{record.bookid,jdbcType=VARCHAR},
+      Bookname = #{record.bookname,jdbcType=VARCHAR},
+      Bookprice = #{record.bookprice,jdbcType=DOUBLE},
+      Bookimage = #{record.bookimage,jdbcType=VARCHAR},
+      Bookstock = #{record.bookstock,jdbcType=VARCHAR},
+      Bookfrom = #{record.bookfrom,jdbcType=VARCHAR},
+      Bookintroduction = #{record.bookintroduction,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dhu.bean.Book">
+    update book
+    <set>
+      <if test="bookname != null">
+        Bookname = #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="bookprice != null">
+        Bookprice = #{bookprice,jdbcType=DOUBLE},
+      </if>
+      <if test="bookimage != null">
+        Bookimage = #{bookimage,jdbcType=VARCHAR},
+      </if>
+      <if test="bookstock != null">
+        Bookstock = #{bookstock,jdbcType=VARCHAR},
+      </if>
+      <if test="bookfrom != null">
+        Bookfrom = #{bookfrom,jdbcType=VARCHAR},
+      </if>
+      <if test="bookintroduction != null">
+        Bookintroduction = #{bookintroduction,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where BookId = #{bookid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dhu.bean.Book">
+    update book
+    set Bookname = #{bookname,jdbcType=VARCHAR},
+      Bookprice = #{bookprice,jdbcType=DOUBLE},
+      Bookimage = #{bookimage,jdbcType=VARCHAR},
+      Bookstock = #{bookstock,jdbcType=VARCHAR},
+      Bookfrom = #{bookfrom,jdbcType=VARCHAR},
+      Bookintroduction = #{bookintroduction,jdbcType=VARCHAR}
+    where BookId = #{bookid,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectBookByPage" resultMap="BaseResultMap">
+        select * from book limit #{start},#{size}
+    </select>
+
+  <select id="selectCount" resultType="int">
+        SELECT COUNT(BookId) FROM book
+    </select>
+
+  <insert id="addbookwithoutpicture" parameterType="com.dhu.bean.Book">
+    insert into book(BookId,Bookname,Bookprice,Bookimage,Bookstock,Bookfrom,Bookintroduction)
+    values (#{bookid},#{bookname}, #{bookprice},null,#{bookstock},#{bookfrom},#{bookintroduction})
+
+  </insert>
+
+  <select id="findBybookname" resultMap="BaseResultMap" parameterType="java.lang.String">
+      SELECT * FROM book where Bookname like "%"#{bookname}"%"
+  </select>
+
+  <update id="updateimage" parameterType="com.dhu.bean.Book">
+    update book
+    set Bookimage = #{bookimage,jdbcType=VARCHAR}
+    where BookId = #{bookid,jdbcType=VARCHAR}
+  </update>
+
+  <select id="findBymajor" resultMap="BaseResultMap" parameterType="java.lang.String">
+      SELECT * FROM book where Bookfrom = #{bookfrom,jdbcType=VARCHAR}
+  </select>
+</mapper>

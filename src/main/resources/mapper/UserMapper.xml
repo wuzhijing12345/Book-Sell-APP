@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.dhu.bean.User">
+    <id column="UserId" jdbcType="VARCHAR" property="userid" />
+    <result column="Username" jdbcType="VARCHAR" property="username" />
+    <result column="Userpassword" jdbcType="VARCHAR" property="userpassword" />
+    <result column="Usergender" jdbcType="VARCHAR" property="usergender" />
+    <result column="Userphone" jdbcType="VARCHAR" property="userphone" />
+    <result column="Userstatus" jdbcType="VARCHAR" property="userstatus" />
+    <result column="Userimage" jdbcType="VARCHAR" property="userimage" />
+    <result column="Usermajor" jdbcType="VARCHAR" property="usermajor" />
+    <result column="Useremail" jdbcType="VARCHAR" property="useremail" />
+    <result column="Usertoken" jdbcType="VARCHAR" property="usertoken" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    UserId, Username, Userpassword, Usergender, Userphone, Userstatus, Userimage, Usermajor, 
+    Useremail, Usertoken, status
+  </sql>
+  <update id="updateStatusById">
+    UPDATE user
+    <set>
+      <if test="status=='offline'">
+        status = "online",
+      </if>
+      <if test="status=='online'">
+        status = "offline",
+      </if>
+    </set>
+    WHERE UserId = #{userid}
+  </update>
+  <update id="updateTokenById">
+        UPDATE user SET Usertoken = #{token} WHERE UserId = #{userid}
+    </update>
+  <select id="selectByExample" parameterType="com.dhu.bean.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where UserId = #{userid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectOneByToken" resultType="User">
+        SELECT * FROM user WHERE usertoken = #{usertoken}
+    </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user
+    where UserId = #{userid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dhu.bean.UserExample">
+    delete from user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dhu.bean.User">
+    insert into user (UserId, Username, Userpassword, 
+      Usergender, Userphone, Userstatus, 
+      Userimage, Usermajor, Useremail, 
+      Usertoken, status)
+    values (#{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{userpassword,jdbcType=VARCHAR}, 
+      #{usergender,jdbcType=VARCHAR}, #{userphone,jdbcType=VARCHAR}, #{userstatus,jdbcType=VARCHAR}, 
+      #{userimage,jdbcType=VARCHAR}, #{usermajor,jdbcType=VARCHAR}, #{useremail,jdbcType=VARCHAR}, 
+      #{usertoken,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dhu.bean.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        UserId,
+      </if>
+      <if test="username != null">
+        Username,
+      </if>
+      <if test="userpassword != null">
+        Userpassword,
+      </if>
+      <if test="usergender != null">
+        Usergender,
+      </if>
+      <if test="userphone != null">
+        Userphone,
+      </if>
+      <if test="userstatus != null">
+        Userstatus,
+      </if>
+      <if test="userimage != null">
+        Userimage,
+      </if>
+      <if test="usermajor != null">
+        Usermajor,
+      </if>
+      <if test="useremail != null">
+        Useremail,
+      </if>
+      <if test="usertoken != null">
+        Usertoken,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userpassword != null">
+        #{userpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="usergender != null">
+        #{usergender,jdbcType=VARCHAR},
+      </if>
+      <if test="userphone != null">
+        #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="userstatus != null">
+        #{userstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="userimage != null">
+        #{userimage,jdbcType=VARCHAR},
+      </if>
+      <if test="usermajor != null">
+        #{usermajor,jdbcType=VARCHAR},
+      </if>
+      <if test="useremail != null">
+        #{useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="usertoken != null">
+        #{usertoken,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dhu.bean.UserExample" resultType="java.lang.Long">
+    select count(*) from user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update user
+    <set>
+      <if test="record.userid != null">
+        UserId = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null">
+        Username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userpassword != null">
+        Userpassword = #{record.userpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usergender != null">
+        Usergender = #{record.usergender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userphone != null">
+        Userphone = #{record.userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userstatus != null">
+        Userstatus = #{record.userstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userimage != null">
+        Userimage = #{record.userimage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usermajor != null">
+        Usermajor = #{record.usermajor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useremail != null">
+        Useremail = #{record.useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usertoken != null">
+        Usertoken = #{record.usertoken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update user
+    set UserId = #{record.userid,jdbcType=VARCHAR},
+      Username = #{record.username,jdbcType=VARCHAR},
+      Userpassword = #{record.userpassword,jdbcType=VARCHAR},
+      Usergender = #{record.usergender,jdbcType=VARCHAR},
+      Userphone = #{record.userphone,jdbcType=VARCHAR},
+      Userstatus = #{record.userstatus,jdbcType=VARCHAR},
+      Userimage = #{record.userimage,jdbcType=VARCHAR},
+      Usermajor = #{record.usermajor,jdbcType=VARCHAR},
+      Useremail = #{record.useremail,jdbcType=VARCHAR},
+      Usertoken = #{record.usertoken,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dhu.bean.User">
+    update user
+    <set>
+      <if test="username != null">
+        Username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userpassword != null">
+        Userpassword = #{userpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="usergender != null">
+        Usergender = #{usergender,jdbcType=VARCHAR},
+      </if>
+      <if test="userphone != null">
+        Userphone = #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="userstatus != null">
+        Userstatus = #{userstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="userimage != null">
+        Userimage = #{userimage,jdbcType=VARCHAR},
+      </if>
+      <if test="usermajor != null">
+        Usermajor = #{usermajor,jdbcType=VARCHAR},
+      </if>
+      <if test="useremail != null">
+        Useremail = #{useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="usertoken != null">
+        Usertoken = #{usertoken,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UserId = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dhu.bean.User">
+    update user
+    set Username = #{username,jdbcType=VARCHAR},
+      Userpassword = #{userpassword,jdbcType=VARCHAR},
+      Usergender = #{usergender,jdbcType=VARCHAR},
+      Userphone = #{userphone,jdbcType=VARCHAR},
+      Userstatus = #{userstatus,jdbcType=VARCHAR},
+      Userimage = #{userimage,jdbcType=VARCHAR},
+      Usermajor = #{usermajor,jdbcType=VARCHAR},
+      Useremail = #{useremail,jdbcType=VARCHAR},
+      Usertoken = #{usertoken,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where UserId = #{userid,jdbcType=VARCHAR}
+  </update>
+  <select id="getUserinfom" resultMap="BaseResultMap" >
+        SELECT *
+        FROM user
+    </select>
+
+  <select id="getUserbyName" resultMap="BaseResultMap" parameterType="String">
+        SELECT *
+        FROM user
+        where Username = #{username,jdbcType=VARCHAR}
+    </select>
+
+  <select id="selectUserByPage" resultMap="BaseResultMap">
+        select * from user limit #{start},#{size}
+    </select>
+
+  <select id="selectCount" resultType="int">
+        SELECT COUNT(UserId) FROM user
+    </select>
+</mapper>
